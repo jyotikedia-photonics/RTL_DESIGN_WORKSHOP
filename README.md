@@ -3,11 +3,11 @@
 
 
 ### Table of contents:
-- [Day 1.](#Day 1 - Introduction to Verilog RTL design and Synthesis)
-- [Day 2.](#Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles)
-- [Day 3.](#Day 3 - Combinational and sequential optimizations)
-- [Day 4.](#Day 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch) 
-- [Day 5.](#Day 5 – If, case for loop and for generate)
+- [Day 1 - Introduction to Verilog RTL design and Synthesis](#Day 1 - Introduction to Verilog RTL design and Synthesis)
+- [Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles](#Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles)
+- [Day 3 - Combinational and sequential optimizations](#Day 3 - Combinational and sequential optimizations)
+- [Day 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch](#Day 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch) 
+- [Day 5 – If, case for loop and for generate](#Day 5 – If, case for loop and for generate)
 - [Acknoledgements.](#Acknowledgements)
 
 ### Commonly used commands.
@@ -29,22 +29,30 @@ In this workshop SKY130 technology and iverilog software tool has been used to c
 
 
 We can see that in iverilog process flow, the design code and its test bench is given as input file which generates a VCD file (Value change dump format) file on simulation. And then using gtkwave one can see the waveforms generated after simulation.
-VERILOG SIMULATION:
-LAB SESSION:
+
+### VERILOG SIMULATION:
+
+**LAB SESSION:**
 Steps/commands:
-load the library for all standard cells of sky130 and Verilog models  files that contain all designs and test benches.
-This can be done using cloning a github repo using command:
-git clone link of repo
-Load Verilog design file and test bench using following command:
-iverilog good_mux.v tb_good_mux.v
+- load the library for all standard cells of sky130 and Verilog models  files that contain all designs and test benches.
+- This can be done using cloning a github repo using command:
 
+ **git clone link of repo**
+- Load Verilog design file and test bench using following command:
 
-a.out file will be created which we need to execute using:
-./a.out
-This will generate a VCD file which can be used to generate waveforms using gtkwave.
-gtkwave tb_good_mux.vcd
- The command to read the Verilog file and see or edit the code is:
-!gvim good_mux.v
+ **iverilog good_mux.v tb_good_mux.v**
+
+- a.out file will be created which we need to execute using:
+
+ **./a.out**
+- This will generate a VCD file which can be used to generate waveforms using gtkwave.
+
+ **gtkwave tb_good_mux.vcd**
+ 
+ - The command to read the Verilog file and see or edit the code is:
+
+ **!gvim good_mux.v**
+ 
 
 
 Screenshot showing step no. 3,4 and 5:
