@@ -1,8 +1,17 @@
 
-## RTL Design using Verilog with SKY130 Technology
+# RTL Design using Verilog with SKY130 Technology
 
-- KINDLY FIND MY WORK AT BELOW LINK : 
+Organized By [VSD DESIGN](https://github.com/kunalg123)
 
-[MY WORK](https://github.com/jyotikedia-photonics/rvmyth_avsddac_interface/blob/main/Figures/RTL_doc.docx.pdf)
+
+## Know About Me
+
+![alt text](https://github.com/NANOPHOTONIC-RESEARCH-SOCIETY-AT-PEC/STC_on_Integrated_Optics/blob/main/Guest%20Speakers/Dr%20Kedia.PNG)
+
+[Dr JYOTI KEDIA](https://pec.ac.in/jyoti-kedia)
+
+**(Assistant Professor @PEC(Deemed to be university)**
+
+![alt text](https://github.com/NANOPHOTONIC-RESEARCH-SOCIETY-AT-PEC/STC_on_Integrated_Optics/blob/main/Guest%20Speakers/Dr%20Dhawan.PNG)
 
 
