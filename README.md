@@ -96,6 +96,12 @@ This is the netlist generated:
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/9.PNG)
 
+# Day 2 
+
+Timing libs, hierarchical vs flat synthesis and efficient flop coding styles
+
+On Day 1 we understood that library contains all standard cells or basic digital modules which can be used to synthesize any given HDL code. Today we are going to view what is there inside the library file and we will also understand the significance of nomenclature of lib file.
+Open the lib file using gvim command by specifying the relative path or going to that folder and open that to view.
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/10.PNG)
 
