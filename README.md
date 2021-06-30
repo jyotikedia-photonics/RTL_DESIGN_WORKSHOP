@@ -562,7 +562,7 @@ endmodule
 
 So we can see in the diagram that the inputs for the possible values of select input as 10 and 11 is not specified. So it will try to retain its old value and as we have looked in an incomplete if statement it will be inferring this incomplete information in case statement also as a latch. This weekend easily verify through simulation and synthesis as shown in the snapshots below.
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/72.PNG)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/day5_pic3.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/73.png)
 
