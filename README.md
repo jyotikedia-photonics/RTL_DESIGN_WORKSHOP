@@ -215,11 +215,11 @@ If you look at the boolean expression carefully we can see that the second term 
 This optimization can be done using the following command:
 opt_clean -purge
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/33.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/day%203_pic1.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/34.png)
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/35.PNG)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/day%203_pic2.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/36.png)
 
@@ -245,7 +245,7 @@ As we can clearly observe from the net list as well as from the synthesizer circ
 
 Similar example of combinational circuit optimization is given below in which we have a hierarchical module that instantiates for sub modules inside itself. However when we look at the expected circuit we see that output is just tied to 1 and all other inputs are not contributing anyhow to the output. When we synthesise the circuit, we found expected results.
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/40.PNG)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/day%203_pic3.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/41.png)
 
@@ -490,7 +490,7 @@ What will this mean in terms of hardware? If condition here gets the highest pri
 Let us look at the hardware. 
 
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/63.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/day5_pic1.png)
 
 - Now let us look at an incomplete if statement. As given in the code below we have written that if I0 is one then why gets the value of I1     however there is no else statement specified. Now let us see what hardware is expected out of this program.
 
@@ -504,7 +504,8 @@ begin
 end
 endmodule
 
-
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/day5_pic2.png)
+               
 So as we can see here in the hardware that seems else statement is not specified output why is going to retain its old value it means it is going to behave as a latch. So this is a combination loop. To avoid this what the tool will do is it will put a Latch. This is the inferred latch. The tool will inform it as a latch and connect here. So whatever value is stored, will be driven here this is called inferred latch coming because of incomplete if.
 How we will write the counter? A count get count + 1. If there is no enable, it should latch on to the previous value. here if no enable a counter should latch on to the previous value.  So this is perfectly fine. this is the intended behaviour however in previous case this is not the intended behaviour in a combinational circuit I cannot have a inferred latch in a combinational circuit. 
 Now let us simulate this incomplete if statement and see what wave forms do we get. As we can see, When I0 is 1 the output why is following I one input but When our Io  is going low , the output y is latching onto some previous value,
