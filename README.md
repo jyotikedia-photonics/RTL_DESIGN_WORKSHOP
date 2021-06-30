@@ -13,11 +13,20 @@ Organized By [VSD DESIGN](https://github.com/kunalg123)
 **(Assistant Professor @PEC(Deemed to be university)**
 
 # Table of Contents
-- [What is RISC V?](#What-is-RISC-V?)
+
 - [Day 1.](#Day-1)
+- [Day 2.](#Day-2)
+- [Day 3.](#Day-1)
+- [Day 4.](#Day-1)
+- [Day 5.](#Day-1)
 
 
 # Day-1
+## Introduction to Verilog RTL design and Synthesis
+
+As we all know hardware description languages are used to design, simulate and synthesize the digital electronic circuits. Any HDL simulator looks for changes on input. Whenever there is a change in primary inputs, the output is evaluated. If there is no change in input, then no output will be evaluated. So any design has primary inputs and primary outputs.
+However, a test bench has no primary inputs and outputs. A test bench is used to check that whether the design behaves as expected or not. It has a stimulus generator corresponding to all input combinations for primary inputs of design and has a stimulus observer that observes the expected output collected from primary outputs of the design. 
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/1.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/2.png)
