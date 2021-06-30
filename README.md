@@ -639,3 +639,7 @@ As we can see in the wave forms above that when input is 10 the output is follow
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/80.png)
 There is synthesis and simulation mismatch.
+           
+           
+ # Acknowledgements
+- [Kunal Ghosh](https://github.com/kunalg123), Co-founder (VSD Corp. Pvt. Ltd)
