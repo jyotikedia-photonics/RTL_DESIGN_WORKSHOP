@@ -31,10 +31,7 @@ However, a test bench has no primary inputs and outputs. A test bench is used to
 
 In this workshop SKY130 technology and iverilog software tool has been used to compile, simulate and synthesize Verilog codes. Following is the iverilog process flow:
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/3.png)
 We can see that in iverilog process flow, the design code and its test bench is given as input file which generates a VCD file (Value change dump format) file on simulation. And then using gtkwave one can see the waveforms generated after simulation.
-
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/4.PNG)
 
 ### VERILOG SIMULATION:
 #### LAB SESSION:
@@ -47,6 +44,16 @@ We can see that in iverilog process flow, the design code and its test bench is 
 - Load Verilog design file and test bench using following command:
 
    iverilog good_mux.v tb_good_mux.v
+   a.out file will be created which we need to execute using:
+   ./a.out
+- This will generate a VCD file which can be used to generate waveforms using gtkwave.
+   gtkwave tb_good_mux.vcd
+- The command to read the Verilog file and see or edit the code is:
+   !gvim good_mux.v
+
+**Screenshot showing step no. 3,4 and 5:**
+
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/3.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/5.PNG)
 
