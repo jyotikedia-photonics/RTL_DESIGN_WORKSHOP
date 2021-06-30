@@ -475,9 +475,7 @@ Now let's see how we get the output after synthesizing and generating GLS. So, w
 
 # Day-5 
 
-– If, case for loop and for generate
-
-In this session we are going to see about if and case statement and there is a danger with the case statement that also we will see. “If” is mainly used to create priority logic.
+n this session we are going to see about if and case statement and there is a danger with the case statement that also we will see. “If” is mainly used to create priority logic.
 The syntax will be as shown below. if <condition> the write the code between begin and end. so clearly this if <condition> portion has a Priority. 
 If <condition>
 ---statement
@@ -491,12 +489,14 @@ Else
 What will this mean in terms of hardware? If condition here gets the highest priority because if this condition matches, all other conditions will not be executed.  When first condition is not met condition 2 will be evaluated. Only when these two are not met condition 3 will be evaluated and further only when all these are not met then else will be evaluated this clearly create a Priority logic.
 Let us look at the hardware. 
 
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/63.png)
 
-Now let us look at an incomplete if statement. As given in the code below we have written that if I0 is one then why gets the value of I1 however there is no else statement specified. Now let us see what hardware is expected out of this program.
+- Now let us look at an incomplete if statement. As given in the code below we have written that if I0 is one then why gets the value of I1     however there is no else statement specified. Now let us see what hardware is expected out of this program.
 
-#### INCOMPLETE IF
- module incomp_if (input i0 , input i1 , input i2 , output reg y);
+### INCOMPLETE IF
+   
+module incomp_if (input i0 , input i1 , input i2 , output reg y);
 always @ (*)
 begin
     if(i0)
@@ -504,23 +504,18 @@ begin
 end
 endmodule
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/64.png)
 
 So as we can see here in the hardware that seems else statement is not specified output why is going to retain its old value it means it is going to behave as a latch. So this is a combination loop. To avoid this what the tool will do is it will put a Latch. This is the inferred latch. The tool will inform it as a latch and connect here. So whatever value is stored, will be driven here this is called inferred latch coming because of incomplete if.
 How we will write the counter? A count get count + 1. If there is no enable, it should latch on to the previous value. here if no enable a counter should latch on to the previous value.  So this is perfectly fine. this is the intended behaviour however in previous case this is not the intended behaviour in a combinational circuit I cannot have a inferred latch in a combinational circuit. 
 Now let us simulate this incomplete if statement and see what wave forms do we get. As we can see, When I0 is 1 the output why is following I one input but When our Io  is going low , the output y is latching onto some previous value,
-it's either 1 or 0 permanently. there is no change absolutely. Thus clearly the latching action is taking place. Lets us see in synthesis. 
-
+     
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/64.png)
+               
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/65.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/66.png)
-
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/67.png)
-
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/68.png)
-
-         
-There we can see in synthesis that we are getting a latch instead of a multiplexer which we were aiming to design when we were writing the code. So it is clearly a case of incomplete if statement which needs to be taken care.
+               
+- There we can see in synthesis that we are getting a latch instead of a multiplexer which we were aiming to design when we were writing the code. So it is clearly a case of incomplete if statement which needs to be taken care.
 Similarly in incomplete if2:
 module incomp_if2 (input i0 , input i1 , input i2 , input i3, output reg y);
 always @ (*)
@@ -532,6 +527,16 @@ begin
 
 end
 endmodule
+               
+               
+ it's either 1 or 0 permanently. there is no change absolutely. Thus clearly the latching action is taking place. Lets us see in synthesis. 
+
+
+
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/67.png)
+
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/68.png)
+
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/69.png)
 
