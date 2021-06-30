@@ -141,6 +141,10 @@ Now If we want to look at that what is there inside the sub modules we can do th
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/18.png)
 
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/19.png)
+
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/20.png)
+
 ## FLIP FLOPS 
 - Let us look at the need of the flip flops in digital circuits. Whenever we design a combinational circuit the outputs are evaluated as soon as whenever there is a change in the input. So due to the delays that is propagation delay across the various gates sometimes the correct outputs are not evaluated because intermediate values propagate or reach to their final value only after the propagation delay and during that time if those intermediate values are used by the other gates cascaded then those cascaded gates are going to evaluate a wrong output for sometime. Although finally they will be reaching their exact or the correct value but momentarily the output of the combinational gates will be incorrect. This is known as glitch in order to avoid this glitching which may result into an altogether incorrect output when we have a series of cascaded gates we can use a storage element in between these cascaded combinations which can hold onto their previous value for sometime.
 - So in this session we're going to look at the designs of D flip flop with various combinations of synchronous or asynchronous set or reset inputs. The set or reset inputs are nothing but the inputs which are used to initialize the flops.
@@ -148,36 +152,36 @@ Now If we want to look at that what is there inside the sub modules we can do th
 # ASYNCHRONOUS RESET
 Here is an example of a D flip flop with asynchronous reset. Asynchronous reset means that output can be 0 whenever the reset input goes high irrespective of the clock pulse.
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/19.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/21.png)
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/20.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/22.png)
 
 It is clearly visible in the above two wave forms that when reset is zero the output follows the input on the next clock pulse whenever it arrives but when reset input is high the output goes to zero irrespective of the clock pulse.
 
 # ASYNCHRONOUS SET
 Similarly we have next example in which there is an asynchronous set input that sets the output of  D flip flop to 1 whenever set input goes high. And if set input is low the output will follow the input on the next clock pulse arrival.
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/21.png)
-
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/22.png)
-
-# SYNCHRONOUS RESET
-This is the example of synchronous reset. What happens here is that whenever reset goes to 1 the output goes to zero only when the new clock arrives since this reset input is synchronized with the clock. And further when this reset input goes low output will follow the input again on the next clock pulse arrival.
-
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/23.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/24.png)
 
-# And in the next few snapshots we can see the synthesizer circuit of the flip flops with asynchronous/synchronous set or reset
-SYNTHESIS OF ASYNCHRONOUS FLIP FLOP
+# SYNCHRONOUS RESET
+This is the example of synchronous reset. What happens here is that whenever reset goes to 1 the output goes to zero only when the new clock arrives since this reset input is synchronized with the clock. And further when this reset input goes low output will follow the input again on the next clock pulse arrival.
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/25.png)
 
-**ASYNCHRONOUS SET**
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/26.png)
 
-**SYNCHRONOUS RESET**
+# And in the next few snapshots we can see the synthesizer circuit of the flip flops with asynchronous/synchronous set or reset
+SYNTHESIS OF ASYNCHRONOUS FLIP FLOP
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/27.png)
+
+**ASYNCHRONOUS SET**
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/28.png)
+
+**SYNCHRONOUS RESET**
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/29.png)
 
 # OPTIMIZATION
 Now let us look at few interesting optimizations in the design. Although the detailed sequential and combinational optimizations are shown in the next session. But here we see very commonly used and interesting optimizations. For example let us say we want to multiply a given 3 bit number buy two. If we write down the truth table showing input as a 3 bit number and an output as a multiple of input number by 2. We will observe that output is having it's 3 most significant bids same as that of the input and the LSB is zero throughout. this means that we need not to have any circuitry to multiply a given number by two rather we can just copy the input number and append a zero as a LSB. so this kind of optimization can lead to a great reduction of this circuit which is anticipated while writing a code.
@@ -186,12 +190,12 @@ Now let us look at few interesting optimizations in the design. Although the det
       assign y = a * 2;
    endmodule
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/28.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/30.png)
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/29.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/31.png)
 
 **Netlist**
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/30.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/32.png)
 
 So like we can see in the synthesised circuit and the generated netlist that there is no circuit at all but the input is directly going as output and a zero is appended at the rightmost bit. The same thing can also be verified in the netlist generated.
 
@@ -211,21 +215,18 @@ If you look at the boolean expression carefully we can see that the second term 
 This optimization can be done using the following command:
 opt_clean -purge
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/31.png)
-
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/32.png)
-
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/33.PNG)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/33.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/34.png)
+
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/35.PNG)
+
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/36.png)
 
 - So it can be clearly seen in the synthesizer circuit that it is not a two input multiplexer but the design can be realised only using an AND gate.
 
 - Here is another example optimization check. As we can see again from the code, hello let it can be two cascaded multiplexers having control input as A and B. The circuit that is expected is as follows
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/35.png)
-
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/36.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/37.PNG)
 
