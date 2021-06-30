@@ -227,62 +227,289 @@ opt_clean -purge
 
 - Here is another example optimization check. As we can see again from the code, hello let it can be two cascaded multiplexers having control input as A and B. The circuit that is expected is as follows
 
-
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/37.PNG)
+
+- When we try to find out the boolean expression for output it minimises to a XNOR c. Now let us observe the synthesise circuit for the given   design.
+   module opt_check4 (input a , input b , input c , output y);
+   assign y = a?(b?(a & c ):c):(!c);
+   endmodule
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/38.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/39.png)
 
+As we can clearly observe from the net list as well as from the synthesizer circuit that the function optimized is Y= a xnor c instead of two 2 input multiplexers. this is how we can optimize the various circuits to minimised up an area as well as power.
+
+
+### Multiple module optimization 
+
+Similar example of combinational circuit optimization is given below in which we have a hierarchical module that instantiates for sub modules inside itself. However when we look at the expected circuit we see that output is just tied to 1 and all other inputs are not contributing anyhow to the output. When we synthesise the circuit, we found expected results.
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/40.PNG)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/41.png)
 
+## SEQUENTIAL OPTIMIZATIONS
+Now let us look at the optimization in sequential circuits. In sequential circuits sometimes on observing the code we find that output is sometimes set to a particular value either one or zero or to anyone of the control input irrespective of the clock pulse. Such flip flops are known as sequential constants. Such a behaviour can be observed from the simulation of the sequence circuit. Is the output of a sequential circuit is set to a constant value irrespective of the clock pulses or any given input then we understand that there is no need to connect a flop or latch to represent that circuit. So we're going to see several examples in this regard.
+
+### Example1:
+
+module dff_const1(input clk, input reset, output reg q);
+always @(posedge clk, posedge reset)
+begin
+    if(reset)
+        q <= 1'b0;
+    else
+        q <= 1'b1;
+end
+endmodule
+
+#### In the first example the code is such that when reset is set to one the output is 0 else output is assigned a constant value one.
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/42.png)
+
+## When reset is 0, the q waits for next clock to go 1 or to follow d input. It means that the output is not having a constant value throughout. Therefore, we need to have this flip flop. This cannot be optimized as sequential constant. 
+
+#### Example 2:
+
+module dff_const2(input clk, input reset, output reg q);
+always @(posedge clk, posedge reset)
+begin
+    if(reset)
+        q <= 1'b1;
+    else
+        q <= 1'b1;
+end
+endmodule
+
+In this example the reset input of the entity is connected to the set input of latch that gives the value of one to the output when reset is set to 1. And when reset goes to zero the output gets a constant value of 1.
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/43.png)
 
+when set is 1, the q is 1 and when set goes to 0 it remains 1 and waits for next clock to take input d which is again 1. So q remains 1 throughout. This is an example of sequential constant.
+
+- As we have seen in the above two examples that how a sequential constant can be observed using the wave forms. Further the behavior can be verified by synthesising the circuits. Following are the snapshots it shows the synthesised circuit corresponding to example one and two respectively.
+
+### Synthesis of Example 1
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/44.png)
 
+### Synthesis of Example 2
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/45.png)
+
+The synthesizer circuits are showing the same behavior that has been observed with simulations. Like example one is showing the circuit as flip flop since it was not an example of sequential constant however the Second Circuit given by example two is certainly an example of sequential constant.
+
+### Example 3
+module dff_const3(input clk, input reset, output reg q);
+reg q1;
+
+always @(posedge clk, posedge reset)
+begin
+    if(reset)
+    begin
+        q <= 1'b1;
+        q1 <= 1'b0;
+    end
+    else
+    begin
+        q1 <= 1'b1;
+        q <= q1;
+    end
+end
+
+endmodule
+
+As we can note from the waveforms that when we set is 1 the output of Q1 is zero and output of Q is 1 since we had seen in the verilog code that the reset input of the block is connected to the set input of flip flop and reset of Q1 flip-flop. Therefore the Q is set to 1 and q one is reset to zero however, when reset goes low then at the next clock input q1 goes to 1 because it input is connected to one. However the output of Flip-flop Q goes to 0 as it is following Q1 at that instant. The Q will get the new input of Q1 in the next clock pulse. So if we synthesize this code we will be needing a flip flop and it is not an example of the synchronous sequential constant. 
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/46.png)
 
+#### Synthesis
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/47.png)
+
+### Example 4
+module dff_const4(input clk, input reset, output reg q);
+reg q1;
+
+always @(posedge clk, posedge reset)
+begin
+    if(reset)
+    begin
+        q <= 1'b1;
+        q1 <= 1'b1;
+    end
+    else
+    begin
+        q1 <= 1'b1;
+        q <= q1;
+    end
+end
+
+endmodule
+
+
+Now like we can see in the waveform for dff constant 4. When reset is 1, the reset input is connected to the set input of both flip flops which sets the output of the flip flops to 1. As we can see in the waveform q and q 1 both are 1 however when reset goes to 0, q1 is connected to the one at the input therefore q1 remains one and so is q. this ia an example of sequential constant. When we synthesise this circuit we will get that we need not any flip flop to get connected as q and q 1 both are one throughout irrespective of the reset or clock which can be verified from the synthesized circuit. 
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/48.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/49.png)
 
+## Example 5
+module dff_const5(input clk, input reset, output reg q);
+reg q1;
+
+always @(posedge clk, posedge reset)
+begin
+    if(reset)
+    begin
+        q <= 1'b0;
+        q1 <= 1'b0;
+    end
+    else
+    begin
+        q1 <= 1'b1;
+        q <= q1;
+    end
+end
+
+endmodule
+
+Now in this design we can see that when reset is 1 the output of both the flip flops is reset to 0 however when reset goes to zero the output of q1 goes to one because the input of Flip-flop q1 is getting an input of one during that same clock pulse the q flip flop is getting an input of q1 that is zero at that moment so it continues to be zero until next clock pulse. During next clock, it identifies q1 as one and  q also goes to one at that time so we can again see this is not an example of sequential constant. 
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/50.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/51.png)
 
+### Example 6:
+Here is another example which is just shown by the analysis. When set input is 1 which is asynchronous, the output is set to 1. When set goes to zero the output follows the input during the next clock pulse. As we can see in the three different combinations or possibilities shown regarding the time during which the set input is reset or the D input toggles from 1 to zero. In all the cases we can see that the output can never be said same as that of  the set input.
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/52.png)
+
+### Unused output optimization
+module counter_opt (input clk , input reset , output q);
+reg [2:0] count;
+assign q = count[0];
+
+always @(posedge clk ,posedge reset)
+begin
+    if(reset)
+        count <= 3'b000;
+    else
+        count <= count + 1;
+end
+
+endmodule
+
+Here we are looking at the design of a counter which is three bit so it can count from zero to 7. We can see in the code that output q is only getting the LSB of the count. Rest of the two bits of count are not utilised at the output at all. So what we expect from the counter design that if it is a 3 bit counter there will be
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/53.png)
 
+# Day-4 
+
+- GLS, blocking vs non-blocking and Synthesis-Simulation mismatch
+GLS stands for gate level simulation. Gate level simulation is verification of the netlist generated by the design under test during simulation. In GLS, we run the test bench with netlist as design under test. Netlist is logically same as RTL code as netlist is the standard cell implementation of RTL code so it must align with the design.
+the need of GLS is to verify the logical correctness of design after synthesis. It is also used to ensure the timing of design that the delay annotations are matched or not.
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/54.PNG)
+
+Carrying out GLS verifies that is there any synthesis simulation mismatch. This mismatch can happen due to two things:
+1. Missing sensitivity list
+2. Blocking versus nonblocking assignments
+so, the above two methods result in the synthesis simulation mismatch because of the use of non-standard verilog coding.
+
+### Blocking and nonblocking statements in verilog 
+What is a blocking statement? Blocking and nonblocking is coming only to the picture when we are using always block. Inside an always block if I am using equal to assignment, we call that is blocking state. It executes in order it is written. First statement is evaluated first, and the second statement is evaluated next. The behaviour is like a C program. In case of a non-blocking it executes parallel. whenever I am using a non-blocking, the moment they enter the always block, all the RHS will be evaluated simultaneously. Evaluation order doesn't matter.
+Following is the example of a blocking statement in which there is a synthesis simulation mismatch.
+Itna tezpurmodule blocking_caveat (input a , input b , input  c, output reg d); 
+reg x;
+always @ (*)
+begin
+    d = x & c;
+    x = a | b;
+end
+endmodule
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/55.png)
 
+As we can see in the waveforms that when a is zero and b is zero the output of or gate should be 0 and when it is ended with C equal to 1 the output of and Gate should be 0 where as we can see in the waveform that d is equal to 1 it means that it is picking up the previous value of x in which x was 1. This one value of x is ended with the 1 value of C which is giving final output D equals to 1 so this is an example of the blocking statement for synthesis and simulation mismatch. It clearly indicates that it is picking up the last value of x it means it is behaving as a flop or I can say it is latching the previous value of the output intermediate output Let Us see that what it gives after synthesis. 
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/56.png)
 
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/57.png)
+
+As we can see in the synthesis above that it has taken or and gate. It has not taken as any kind of latch in case of synthesizer output if we see however if we look at the GLS waveforms we can clearly see that there is no lashed or lag output it is just taking the current or instantaneous value that when a Is Zero B is zero and she is 1 then output of and OR gate is 0 not one ok so we can see that this is a clearly case of synthesis simulation mismatch. This mismatch is caused by the blocking statement. 
+
+### TERNARY OPERATOR
+As we can see in the code that this is a 2 input multiplexer and for which the output is i0 when select is low and output is i1 when select is high so lets simulate it and see the waveforms. As we can see in the waveforms that output is following I0  when select is 0 and output is following I 1 when select is one. So we can clearly see in the sentences that it is a 2 is to 1 mux with I 0 and I1 as input with select input and output as Y. The output of the simulation and GLS matches exactly.
+
+module ternary_operator_mux (input i0 , input i1 , input sel , output y);
+    assign y = sel?i1:i0;
+    endmodule
+
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/58.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/59.png)
 
+After GLS
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/60.png)
+
+### BAD MUX
+
+module bad_mux (input i0 , input i1 , input sel , output reg y);
+always @ (sel)
+begin
+    if(sel)
+        y <= i1;
+    else 
+        y <= i0;
+end
+endmodule
+Now we have simulated the verilog model for bad mux in which we need to see that is there any simulation of synthesis mismatch . now we can see in the waveforms that although there are activities on I 0 that it is changing from 1 to0, 0 to 1 but it is not reflected at the output because there has been no activity on select input which was the only sensitivity list put in the  always block. So we can clearly see  that the output is not following the input because of the incorrect way of writing the sensitivity list in the verilog module.
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/61.png)
 
+Now let's see how we get the output after synthesizing and generating GLS. So, we can see from the GLS waveform that output is following I not corresponding to whatever is a select input at that time which if we compared with the simulation output was missing so this output after synthesis is correct we can see here that the simulation and synthesis waveforms are not matching
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/62.png)
+
+# Day-5 
+
+– If, case for loop and for generate
+
+In this session we are going to see about if and case statement and there is a danger with the case statement that also we will see. “If” is mainly used to create priority logic.
+The syntax will be as shown below. if <condition> the write the code between begin and end. so clearly this if <condition> portion has a Priority. 
+If <condition>
+---statement
+Elsif <condition2>
+--- statement
+Elseif <condition3>
+--- statement
+Else
+--- statements
+
+What will this mean in terms of hardware? If condition here gets the highest priority because if this condition matches, all other conditions will not be executed.  When first condition is not met condition 2 will be evaluated. Only when these two are not met condition 3 will be evaluated and further only when all these are not met then else will be evaluated this clearly create a Priority logic.
+Let us look at the hardware. 
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/63.png)
 
+Now let us look at an incomplete if statement. As given in the code below we have written that if I0 is one then why gets the value of I1 however there is no else statement specified. Now let us see what hardware is expected out of this program.
+
+#### INCOMPLETE IF
+ module incomp_if (input i0 , input i1 , input i2 , output reg y);
+always @ (*)
+begin
+    if(i0)
+        y <= i1;
+end
+endmodule
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/64.png)
+
+So as we can see here in the hardware that seems else statement is not specified output why is going to retain its old value it means it is going to behave as a latch. So this is a combination loop. To avoid this what the tool will do is it will put a Latch. This is the inferred latch. The tool will inform it as a latch and connect here. So whatever value is stored, will be driven here this is called inferred latch coming because of incomplete if.
+How we will write the counter? A count get count + 1. If there is no enable, it should latch on to the previous value. here if no enable a counter should latch on to the previous value.  So this is perfectly fine. this is the intended behaviour however in previous case this is not the intended behaviour in a combinational circuit I cannot have a inferred latch in a combinational circuit. 
+Now let us simulate this incomplete if statement and see what wave forms do we get. As we can see, When I0 is 1 the output why is following I one input but When our Io  is going low , the output y is latching onto some previous value,
+it's either 1 or 0 permanently. there is no change absolutely. Thus clearly the latching action is taking place. Lets us see in synthesis. 
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/65.png)
 
@@ -291,6 +518,20 @@ opt_clean -purge
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/67.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/68.png)
+
+         
+There we can see in synthesis that we are getting a latch instead of a multiplexer which we were aiming to design when we were writing the code. So it is clearly a case of incomplete if statement which needs to be taken care.
+Similarly in incomplete if2:
+module incomp_if2 (input i0 , input i1 , input i2 , input i3, output reg y);
+always @ (*)
+begin
+    if(i0)
+        y <= i1;
+    else if (i2)
+        y <= i3;
+
+end
+endmodule
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/69.png)
 
