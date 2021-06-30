@@ -561,9 +561,9 @@ endmodule
 
 So we can see in the diagram that the inputs for the possible values of select input as 10 and 11 is not specified. So it will try to retain its old value and as we have looked in an incomplete if statement it will be inferring this incomplete information in case statement also as a latch. This weekend easily verify through simulation and synthesis as shown in the snapshots below.
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/71.PNG)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/72.PNG)
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/72.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/73.png)
 
 #### SOLUTION TO INCOMPLETE CASE:
 There is a solution to the incomplete case statement that if we use the default value for the left out options in case of case statement then there will be no latches. This has been shown by modifying the code of the cases statement written below using default and then subsequent to that are shown the correct wave forms and the synthesis circuit. So we can see that there are no more latches after synthesis in the circuit.
@@ -578,11 +578,11 @@ begin
 end
 endmodule
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/73.png)
-
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/74.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/75.png)
+
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/76.png)
 
 #### PARTIAL ASSIGNMENT: CASE STATEMENT
 
@@ -606,7 +606,7 @@ end
 endmodule
 
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/76.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/77.png)
 
 #### OVERLAPPING CONDITIONS
 And the last caveat in case and if statement is if we compare If in case statement then there is clearly a Priority list in if statement like if statement condition is true it is not going to go to the rest of the conditions and it will come out of it however if this condition is not met then it is going to the next else if clause or else clause only one portion of the if statement will be executed and whichever is executed it will leave rest of the cases and come out of the if statement. However, such is not the case in case of case statement. Like we can see in the given example if we have overlapping case such as in option 3 and 4 since case statement goes sequentially when it matches the option 10 for the select input it will execute those statements and then it will also go to the next option which also matches because of it is 1x, so clearly it is going to create problem for the hardware. So, in case statement we should not have any overlapping case. 
@@ -627,14 +627,14 @@ end
 
 endmodule
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/77.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/78.png)
 
 As we can see in the wave forms above that when input is 10 the output is following I 2 but when input is 11 it is not following any input what is randomly held on to logic 1. However when we look at the synthesis details, there are no latches. it means there are no inferred latches and when we look at the GLS waveform we can see that output is correctly getting input I3 when select input is 11. It means that this is a case of simulation synthesis mismatch.
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/78.png)
+
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/79.png)
 
 #### GLS
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/79.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/80.png)
 There is synthesis and simulation mismatch.
