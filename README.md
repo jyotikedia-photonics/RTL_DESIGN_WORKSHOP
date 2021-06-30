@@ -12,6 +12,12 @@ Organized By [VSD DESIGN](https://github.com/kunalg123)
 
 **(Assistant Professor @PEC(Deemed to be university)**
 
+# Table of Contents
+- [What is RISC V?](#What-is-RISC-V?)
+- [Day 1.](#Day-1)
+
+
+# Day-1
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/1.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/2.png)
