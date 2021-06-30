@@ -513,10 +513,15 @@ Now let us simulate this incomplete if statement and see what wave forms do we g
                
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/65.png)
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/66.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/66.png)           
+ 
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/67.png)
+
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/68.png)
                
 - There we can see in synthesis that we are getting a latch instead of a multiplexer which we were aiming to design when we were writing the code. So it is clearly a case of incomplete if statement which needs to be taken care.
-Similarly in incomplete if2:
+
+#### Similarly in incomplete if2:
 module incomp_if2 (input i0 , input i1 , input i2 , input i3, output reg y);
 always @ (*)
 begin
@@ -529,22 +534,49 @@ end
 endmodule
                
                
- it's either 1 or 0 permanently. there is no change absolutely. Thus clearly the latching action is taking place. Lets us see in synthesis. 
-
-
-
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/67.png)
-
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/68.png)
+ it is either 1 or 0 permanently. there is no change absolutely. Thus clearly the latching action is taking place. Lets us see in synthesis. 
 
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/69.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/70.png)
 
+- Is another example of incomplete if statement we can see in the waveforms that when Io is one Y  is following I 1 when Io is 0 and I 2 is 1 then output is following I3 But when both Io  and I 2 is 0 it is holding onto its previous value like a  latch.
+ So as expected we can see in in the circuit that is implemented or synthesized that there is a latch having enabled by the combination of Io and I2 both are going into the NOR gate so it means the latch is an active low enabled and whenever the latch is enabled the input is a combination of Io ,I1 and I 3 that is going through a mux so this is what as expected. 
+
+#### INCOMPLETE CASE STATEMENT
+if and case are used Inside always block, so the rule in verilog is whatever variable you are trying to assign in case or if should be a register variable. case statement is also going to be like a mux. so effectively what it is going to do. What are the important case caveats, let us look at that. Case statement is very very dangerous to use without having understanding. 
+           
+1. Incomplete case statement : Incomplete  case statement will lead to inferred latches. For example now when select is zero you are giving a C1 and when select is one you are giving C2. What should happen when select is 3 or 4, it is not told. What is going to cause is an incomplete case Or inferred latches. This is very dangerous so to avoid incomplete cases the solution is code case with default.
+Below is shown the example of an incomplete case statement. What is expected out of here is a four input marks with four inputs, two select lines and and an output.
+module incomp_case (input i0 , input i1 , input i2 , input [1:0] sel, output reg y);
+always @ (*)
+begin
+    case(sel)
+        2'b00 : y = i0;
+        2'b01 : y = i1;
+    endcase
+end
+endmodule
+
+So we can see in the diagram that the inputs for the possible values of select input as 10 and 11 is not specified. So it will try to retain its old value and as we have looked in an incomplete if statement it will be inferring this incomplete information in case statement also as a latch. This weekend easily verify through simulation and synthesis as shown in the snapshots below.
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/71.PNG)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/72.png)
+
+#### SOLUTION TO INCOMPLETE CASE:
+There is a solution to the incomplete case statement that if we use the default value for the left out options in case of case statement then there will be no latches. This has been shown by modifying the code of the cases statement written below using default and then subsequent to that are shown the correct wave forms and the synthesis circuit. So we can see that there are no more latches after synthesis in the circuit.
+module comp_case (input i0 , input i1 , input i2 , input [1:0] sel, output reg y);
+always @ (*)
+begin
+    case(sel)
+        2'b00 : y = i0;
+        2'b01 : y = i1;
+        default : y = i2;
+    endcase
+end
+endmodule
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/73.png)
 
@@ -552,12 +584,57 @@ endmodule
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/75.png)
 
+#### PARTIAL ASSIGNMENT: CASE STATEMENT
+
+Now there are two output called X and Y so that will be too muxes. So we think that we have added default statement so everything  is done correctly but that doesnot guarantee anything. When select is 0 0 x is getting i2 and Y is getting i0. When select is 0 1 is getting we see that y is getting i1 but nothing is assigned for x. So during this case of selecting 0 1, X will be latched however for rest of the two input combinations it is mentioned that X is getting i1 and why is getting i2. So, this is going to create and inferred latch. 
+
+module partial_case_assign (input i0 , input i1 , input i2 , input [1:0] sel, output reg y , output reg x);
+always @ (*)
+begin
+    case(sel)
+        2'b00 : begin
+            y = i0;
+            x = i2;
+            end
+        2'b01 : y = i1;
+        default : begin
+                   x = i1;
+               y = i2;
+              end
+    endcase
+end
+endmodule
+
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/76.png)
+
+#### OVERLAPPING CONDITIONS
+And the last caveat in case and if statement is if we compare If in case statement then there is clearly a Priority list in if statement like if statement condition is true it is not going to go to the rest of the conditions and it will come out of it however if this condition is not met then it is going to the next else if clause or else clause only one portion of the if statement will be executed and whichever is executed it will leave rest of the cases and come out of the if statement. However, such is not the case in case of case statement. Like we can see in the given example if we have overlapping case such as in option 3 and 4 since case statement goes sequentially when it matches the option 10 for the select input it will execute those statements and then it will also go to the next option which also matches because of it is 1x, so clearly it is going to create problem for the hardware. So, in case statement we should not have any overlapping case. 
+So let us look at the code below. 
+This is a case when we are having overlapping options for case statement. Now we are going to see the output of the simulation then synthesis and GLS simulation also.
+
+module bad_case (input i0 , input i1, input i2, input i3 , input [1:0] sel, output reg y);
+always @(*)
+begin
+    case(sel)
+        2'b00: y = i0;
+        2'b01: y = i1;
+        2'b10: y = i2;
+        2'b1?: y = i3;
+        //2'b11: y = i3;
+    endcase
+end
+
+endmodule
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/77.png)
 
+As we can see in the wave forms above that when input is 10 the output is following I 2 but when input is 11 it is not following any input what is randomly held on to logic 1. However when we look at the synthesis details, there are no latches. it means there are no inferred latches and when we look at the GLS waveform we can see that output is correctly getting input I3 when select input is 11. It means that this is a case of simulation synthesis mismatch.
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/78.png)
 
+#### GLS
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/79.png)
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/80.png)
+There is synthesis and simulation mismatch.
