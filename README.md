@@ -31,6 +31,8 @@ However, a test bench has no primary inputs and outputs. A test bench is used to
 
 In this workshop SKY130 technology and iverilog software tool has been used to compile, simulate and synthesize Verilog codes. Following is the iverilog process flow:
 
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/3.png)
+
 We can see that in iverilog process flow, the design code and its test bench is given as input file which generates a VCD file (Value change dump format) file on simulation. And then using gtkwave one can see the waveforms generated after simulation.
 
 ### VERILOG SIMULATION:
@@ -53,15 +55,43 @@ We can see that in iverilog process flow, the design code and its test bench is 
 
 **Screenshot showing step no. 3,4 and 5:**
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/3.png)
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/4.PNG)
+
+**Screenshot showing waveforms of multiplexer:**
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/5.PNG)
 
+## SYNTHESIS:
+
+A synthesizer converts RTL into netlist. The netlist is a representation of the design in terms of standard cells such as and, or, not gates. We have Yosys as a synthesizer tool. The flow of Yosys synthesizer is as follows:
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/6.PNG)
+
+## LAB SESSION:
+### Steps/commands:
+#### Read the library for all standard cells of sky130 using command:
+
+   read_liberty -lib path of library
+- Read the Verilog file which we want to synthesize using command:
+   read_verilog good_mux.v
+- Synthesize the top level entity in the given design using following command:
+   synth -top good_mux 
+- Generate the netlist using:
+   abc -liberty path of library
+- The netlist can be written in readable format and then read using 
+   a) write_verilog -noattr good_mux_netlist.v
+   b) !gvim good_mux_netlist.v
+- At the end the circuit synthesized can be viewed using command:
+   show
+
+after synth command: shows statistics of how many number of blocks are there etc.
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/7.PNG)
 
+This is the synthesized circuit. As we can see it is a 2 input multiplexer mapped with inputs and outputs of our design.
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/8.PNG)
+
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/9.PNG)
 
