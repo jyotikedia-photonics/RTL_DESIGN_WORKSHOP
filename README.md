@@ -1,6 +1,6 @@
 
 # RTL Design using Verilog with SKY130 Technology
-
+![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/1.png)
 Organized By [VSD DESIGN](https://github.com/kunalg123)
 
 
@@ -27,13 +27,26 @@ Organized By [VSD DESIGN](https://github.com/kunalg123)
 As we all know hardware description languages are used to design, simulate and synthesize the digital electronic circuits. Any HDL simulator looks for changes on input. Whenever there is a change in primary inputs, the output is evaluated. If there is no change in input, then no output will be evaluated. So any design has primary inputs and primary outputs.
 However, a test bench has no primary inputs and outputs. A test bench is used to check that whether the design behaves as expected or not. It has a stimulus generator corresponding to all input combinations for primary inputs of design and has a stimulus observer that observes the expected output collected from primary outputs of the design. 
 
-![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/1.png)
-
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/2.png)
 
+In this workshop SKY130 technology and iverilog software tool has been used to compile, simulate and synthesize Verilog codes. Following is the iverilog process flow:
+
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/3.png)
+We can see that in iverilog process flow, the design code and its test bench is given as input file which generates a VCD file (Value change dump format) file on simulation. And then using gtkwave one can see the waveforms generated after simulation.
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/4.PNG)
+
+### VERILOG SIMULATION:
+#### LAB SESSION:
+##### Steps/commands:
+- load the library for all standard cells of sky130 and Verilog models  files that contain all designs and test benches.
+- This can be done using cloning a github repo using command:
+
+   git clone link of repo
+
+- Load Verilog design file and test bench using following command:
+
+   iverilog good_mux.v tb_good_mux.v
 
 ![alt text](https://github.com/jyotikedia-photonics/RTL_DESIGN_WORKSHOP/blob/main/Figures/5.PNG)
 
